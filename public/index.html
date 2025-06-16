@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YouTube to MP3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1>🎵 YouTube to MP3 Converter</h1>
+    <form id="convertForm">
+      <input type="text" id="urlInput" placeholder="Paste YouTube URL here..." required />
+      <input type="text" id="filenameInput" placeholder="Optional: Custom filename" />
+      <button type="submit">Convert & Download</button>
+    </form>
+    
+    <div id="loading" class="hidden">
+      <div class="spinner"></div>
+      <p>Processing your request...</p>
+    </div>
+
+    <div id="result" class="hidden">
+      <p id="message"></p>
+      <a id="downloadLink" href="#" download>⬇️ Download MP3</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

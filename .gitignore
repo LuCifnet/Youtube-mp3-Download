@@ -1,0 +1,26 @@
+# Node modules folder (dependencies)
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables (if you have .env files)
+.env
+
+# Downloaded files folder (downloads)
+downloads/
+
+# OS generated files (Windows, macOS)
+.DS_Store
+Thumbs.db
+
+# Optional: Editor/IDE files (Visual Studio Code)
+.vscode/
+
+# Optional: build output if any (like dist or build folders)
+dist/
+build/
