@@ -13,12 +13,18 @@ document.getElementById('convertForm').addEventListener('submit', async function
   const result = document.getElementById('result');
   const message = document.getElementById('message');
   const downloadLink = document.getElementById('downloadLink');
+  const convertBtn = document.getElementById('convertBtn');
 
-  // Reset
+  // Reset UI
   loading.classList.remove('hidden');
   result.classList.add('hidden');
   message.textContent = "";
   downloadLink.href = "#";
+  downloadLink.style.display = 'none';
+
+  // Disable button and update text
+  convertBtn.disabled = true;
+  convertBtn.innerHTML = '<span>Processing...</span>';
 
   try {
     const response = await fetch('/api/download', {
@@ -36,26 +42,33 @@ document.getElementById('convertForm').addEventListener('submit', async function
       message.textContent = "✅ MP3 file is ready!";
       downloadLink.href = data.file;
       downloadLink.setAttribute("download", "");
+      downloadLink.style.display = 'inline-block'; // show download link
     } else {
       result.classList.remove('hidden');
       message.textContent = "❌ " + (data.error || "Something went wrong");
+      downloadLink.style.display = 'none';
     }
 
   } catch (err) {
     loading.classList.add('hidden');
     result.classList.remove('hidden');
     message.textContent = "❌ Server error. Try again.";
+    downloadLink.style.display = 'none';
   }
+
+  // Enable button and restore text
+  convertBtn.disabled = false;
+  convertBtn.innerHTML = '<span>Convert & Download</span>';
 });
 
-// Add some interactive animations
+// Add input focus animations and ripple effect (keep your existing code)
 document.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById('convertForm');
   const loading = document.getElementById('loading');
   const result = document.getElementById('result');
   const convertBtn = document.getElementById('convertBtn');
 
-  // Add input focus animations
+  // Input focus animations
   const inputs = document.querySelectorAll('input[type="text"]');
   inputs.forEach(input => {
     input.addEventListener('focus', function () {
@@ -67,31 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Form submission with animations
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    // Hide result if visible
-    result.classList.add('hidden');
-
-    // Show loading with animation
-    loading.classList.remove('hidden');
-    convertBtn.disabled = true;
-    convertBtn.innerHTML = '<span>Processing...</span>';
-
-    // Simulate processing (replace with actual API call)
-    setTimeout(() => {
-      loading.classList.add('hidden');
-      result.classList.remove('hidden');
-      convertBtn.disabled = false;
-      convertBtn.innerHTML = '<span>Convert & Download</span>';
-
-      document.getElementById('message').textContent = 'Conversion completed successfully!';
-      document.getElementById('downloadLink').href = '#'; // Replace with actual download link
-    }, 3000);
-  });
-
-  // Add button click ripple effect
+  // Ripple effect on button
   convertBtn.addEventListener('click', function (e) {
     const ripple = document.createElement('span');
     const rect = this.getBoundingClientRect();
@@ -116,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(() => ripple.remove(), 600);
   });
 
-  // Add CSS for ripple animation
+  // Ripple keyframe animation style
   const style = document.createElement('style');
   style.textContent = `
         @keyframes ripple {
