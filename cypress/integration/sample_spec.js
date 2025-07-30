@@ -1,6 +1,6 @@
 describe('Homepage', () => {
   it('successfully loads', () => {
-    cy.visit('http://localhost:3000')  // Change if your server runs on another port
-    cy.contains('Your site title or some text on homepage')
+    cy.visit('http://localhost:3000') 
+    cy.contains('Welcome to YouTube MP3 Downloader')
   })
 })
