@@ -6,9 +6,8 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // ✅ FIXED: dynamic port for Render
 
-// Define the directory where MP3 files will be saved
 const DOWNLOAD_DIR = path.join(__dirname, '..', 'downloads');
 
 if (!fs.existsSync(DOWNLOAD_DIR)) {
@@ -18,10 +17,12 @@ if (!fs.existsSync(DOWNLOAD_DIR)) {
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+
+// ✅ Serve static files
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/downloads', express.static(DOWNLOAD_DIR));
 
-// Route: Convert YouTube to MP3
+// API Route
 app.post('/api/download', (req, res) => {
   const { url, filename } = req.body;
 
@@ -29,7 +30,6 @@ app.post('/api/download', (req, res) => {
     return res.status(400).json({ error: 'Invalid YouTube URL' });
   }
 
-  // Use custom filename if provided, otherwise use the YouTube video title
   const ytDlpOutputTemplate = filename
     ? path.join(DOWNLOAD_DIR, filename.replace(/[<>:"/\\|?*]+/g, '_')) + '.%(ext)s'
     : path.join(DOWNLOAD_DIR, '%(title)s.%(ext)s');
@@ -42,7 +42,6 @@ app.post('/api/download', (req, res) => {
       return res.status(500).json({ error: 'Failed to download video' });
     }
 
-    // Find the most recently modified MP3 file
     const files = fs.readdirSync(DOWNLOAD_DIR)
       .filter(file => file.endsWith('.mp3'))
       .map(file => ({
