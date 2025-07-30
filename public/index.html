@@ -3,30 +3,134 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>YouTube to MP3</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css"/>
+  <title>YouTube to MP3 - Professional Converter</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 </head>
 <body>
   <div class="container">
-    <h1>🎵 YouTube to MP3 Converter</h1>
-    <form id="convertForm">
-      <input type="text" id="urlInput" placeholder="Paste YouTube URL here..." required />
-      <input type="text" id="filenameInput" placeholder="Optional: Custom filename" />
-      <button type="submit">Convert & Download</button>
-    </form>
-    
-    <div id="loading" class="hidden">
-      <div class="spinner"></div>
-      <p>Processing your request...</p>
-    </div>
+    <div class="card">
+      <h1>🎵 YouTube to MP3</h1>
+      
+      <form id="convertForm">
+        <div class="form-group">
+          <div class="input-container">
+            <input type="text" id="urlInput" placeholder="Paste YouTube URL here..." required />
+            <div class="input-icon">🔗</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <div class="input-container">
+            <input type="text" id="filenameInput" placeholder="Optional: Custom filename" />
+            <div class="input-icon">📝</div>
+          </div>
+        </div>
+        
+        <button type="submit" id="convertBtn">
+          <span>Convert & Download</span>
+        </button>
+      </form>
+      
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Processing your request...</p>
+      </div>
 
-    <div id="result" class="hidden">
-      <p id="message"></p>
-      <a id="downloadLink" href="#" download>⬇️ Download MP3</a>
+      <div id="result" class="result hidden">
+        <p id="message"></p>
+        <a id="downloadLink" href="#" download class="download-link">
+          ⬇️ Download MP3
+        </a>
+      </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <footer>
+    <p>Made with ❤️ for educational purposes. Please respect copyright laws.</p>
+  </footer>
+
+  <script>
+    // Add some interactive animations
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('convertForm');
+      const loading = document.getElementById('loading');
+      const result = document.getElementById('result');
+      const convertBtn = document.getElementById('convertBtn');
+      
+      // Add input focus animations
+      const inputs = document.querySelectorAll('input[type="text"]');
+      inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+          this.parentElement.style.transform = 'scale(1.02)';
+        });
+        
+        input.addEventListener('blur', function() {
+          this.parentElement.style.transform = 'scale(1)';
+        });
+      });
+      
+      // Form submission with animations
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Hide result if visible
+        result.classList.add('hidden');
+        
+        // Show loading with animation
+        loading.classList.remove('hidden');
+        convertBtn.disabled = true;
+        convertBtn.innerHTML = '<span>Processing...</span>';
+        
+        // Simulate processing (replace with actual API call)
+        setTimeout(() => {
+          loading.classList.add('hidden');
+          result.classList.remove('hidden');
+          convertBtn.disabled = false;
+          convertBtn.innerHTML = '<span>Convert & Download</span>';
+          
+          document.getElementById('message').textContent = 'Conversion completed successfully!';
+          document.getElementById('downloadLink').href = '#'; // Replace with actual download link
+        }, 3000);
+      });
+      
+      // Add button click ripple effect
+      convertBtn.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.cssText = `
+          position: absolute;
+          width: ${size}px;
+          height: ${size}px;
+          left: ${x}px;
+          top: ${y}px;
+          background: rgba(255, 255, 255, 0.5);
+          border-radius: 50%;
+          transform: scale(0);
+          animation: ripple 0.6s linear;
+          pointer-events: none;
+        `;
+        
+        this.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      });
+      
+      // Add CSS for ripple animation
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes ripple {
+          to {
+            transform: scale(4);
+            opacity: 0;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    });
+  </script>
 </body>
 </html>
